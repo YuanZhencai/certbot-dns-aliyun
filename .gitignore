@@ -6,3 +6,4 @@ build/
 dist/
 certbot_dns_aliyun.egg-info/
 *.snap
+.idea
