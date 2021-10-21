@@ -59,3 +59,21 @@ certbot certonly -a certbot-dns-aliyun:dns-aliyun \
     -d example.com \
     -d "*.example.com"
 ```
+
+
+## Docker
+
+```bash
+# 构建镜像
+make image
+# 生成证书
+sudo docker run -it --rm --name certbot \
+            -v "/etc/letsencrypt:/etc/letsencrypt" \
+            -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+            registry.cn-shanghai.aliyuncs.com/happiness-frog/certbot certonly -a certbot-dns-aliyun:dns-aliyun --certbot-dns-aliyun:dns-aliyun-credentials /etc/letsencrypt/credentials.ini -d happiness-frog.cn -d "*.happiness-frog.cn"
+# 证书续期
+sudo docker run -it --rm --name certbot \
+            -v "/etc/letsencrypt:/etc/letsencrypt" \
+            -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+            registry.cn-shanghai.aliyuncs.com/happiness-frog/certbot renew -a certbot-dns-aliyun:dns-aliyun --certbot-dns-aliyun:dns-aliyun-credentials /etc/letsencrypt/credentials.ini
+```
