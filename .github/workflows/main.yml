@@ -3,14 +3,18 @@ on: [push]
 jobs:
 
   build:
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
+      - name: renew letsencrypt
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: whoami
+          script: |
+            docker pull registry.cn-shanghai.aliyuncs.com/happiness-frog/certbot
+            docker run -it --rm --name certbot -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/lib/letsencrypt:/var/lib/letsencrypt" registry.cn-shanghai.aliyuncs.com/happiness-frog/certbot renew -a certbot-dns-aliyun:dns-aliyun --certbot-dns-aliyun:dns-aliyun-credentials /etc/letsencrypt/credentials.ini
+            docker-compose -f /opt/wenwa/nginx/docker-compose.yml restart
+
