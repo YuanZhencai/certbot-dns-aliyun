@@ -15,6 +15,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             docker pull registry.cn-shanghai.aliyuncs.com/happiness-frog/certbot
-            docker run -it --rm --name certbot -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/lib/letsencrypt:/var/lib/letsencrypt" registry.cn-shanghai.aliyuncs.com/happiness-frog/certbot renew -a certbot-dns-aliyun:dns-aliyun --certbot-dns-aliyun:dns-aliyun-credentials /etc/letsencrypt/credentials.ini
+            docker run -it -d --rm --name certbot -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/lib/letsencrypt:/var/lib/letsencrypt" registry.cn-shanghai.aliyuncs.com/happiness-frog/certbot renew -a certbot-dns-aliyun:dns-aliyun --certbot-dns-aliyun:dns-aliyun-credentials /etc/letsencrypt/credentials.ini
             docker-compose -f /opt/wenwa/nginx/docker-compose.yml restart
 
